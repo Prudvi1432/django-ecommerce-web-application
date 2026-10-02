@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Checkout</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        .navbar {
+            background: #222;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .error {
+            background: #ffe5e5;
+            color: #b00020;
+            border: 1px solid #ffb3b3;
+            padding: 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .place-order {
+            width: 100%;
+            margin-top: 25px;
+            background: #28a745;
+            color: white;
+        }
+
+        .place-order:hover {
+            background: #218838;
+        }
+
+        .back {
+            background: #eee;
+            color: #222;
+            margin-top: 12px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .secure {
+            margin-top: 20px;
+            color: #666;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        @media (max-width: 800px) {
+
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<div class="navbar">
+
+    <div class="logo">
+        My E-Commerce Store
+    </div>
+
+    <div class="nav-links">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'cart' %}">
+            Cart
+        </a>
+
+        <a href="{% url 'my_orders' %}">
+            My Orders
+        </a>
+
+        <a href="{% url 'logout' %}">
+            Logout
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="container">
+
+    <h1>
+        Checkout
+    </h1>
+
+
+    {% if error %}
+
+        <div class="error">
+            ⚠️ {{ error }}
+        </div>
+
+    {% endif %}
+
+
+    <div class="checkout-grid">
+
+
+        <!-- DELIVERY DETAILS -->
+
+        <div class="card">
+
+            <h2>
+                Delivery Details
+            </h2>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <label>
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter your full name"
+                    required
+                >
+
+
+                <label>
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+
+                <label>
+                    Phone Number
+                </label>
+
+                <input
+                    type="tel"
+                    name="phone"
+                    placeholder="10-digit phone number"
+                    maxlength="10"
+                    required
+                >
+
+
+                <label>
+                    Delivery Address
+                </label>
+
+                <textarea
+                    name="address"
+                    placeholder="Enter your complete delivery address"
+                    required
+                ></textarea>
+
+
+                <label>
+                    Payment Method
+                </label>
+
+                <select name="payment_method" required>
+
+                    <option value="">
+                        Select Payment Method
+                    </option>
+
+                    <option value="Cash on Delivery">
+                        Cash on Delivery
+                    </option>
+
+                </select>
+
+
+                <button
+                    type="submit"
+                    class="btn place-order"
+                >
+                    Place Order
+                </button>
+
+            </form>
+
+
+            <a
+                href="{% url 'cart' %}"
+                class="btn back"
+            >
+                ← Back to Cart
+            </a>
+
+
+            <div class="secure">
+                🔒 Your order details are securely processed.
+            </div>
+
+        </div>
+
+
+        <!-- ORDER SUMMARY -->
+
+        <div class="card">
+
+            <h2>
+                Order Summary
+            </h2>
+
+
+            {% for item in cart_items %}
+
+                <div class="summary-item">
+
+                    <span>
+                        {{ item.product.name }}
+                        × {{ item.quantity }}
+                    </span>
+
+                    <span>
+                        ₹{{ item.product.price|floatformat:2 }}
+                    </span>
+
+                </div>
+
+            {% endfor %}
+
+
+            <div class="total">
+
+                <span>
+                    Total
+                </span>
+
+                <span>
+                    ₹{{ total|floatformat:2 }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

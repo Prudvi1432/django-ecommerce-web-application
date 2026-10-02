@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ product.name }} - Prudvi Store</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        .navbar {
+            background: #111827;
+            padding: 16px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 6px;
+        }
+
+        .nav-links a:hover {
+            background: #374151;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 50px auto;
+        }
+
+        .product-box {
+            background: white;
+            border-radius: 15px;
+            padding: 35px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 450px;
+            object-fit: contain;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .no-image {
+            height: 450px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .product-info h1 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .price {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2563eb;
+            margin: 20px 0;
+        }
+
+        .stock {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 8px 13px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            width: fit-content;
+        }
+
+        .out-stock {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .add-btn {
+            display: inline-block;
+            text-align: center;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-message {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 750px) {
+
+            .product-box {
+                grid-template-columns: 1fr;
+                padding: 20px;
+                gap: 25px;
+            }
+
+            .product-image,
+            .no-image {
+                height: 320px;
+            }
+
+            .product-info h1 {
+                font-size: 30px;
+            }
+
+            .navbar {
+                justify-content: center;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <a href="{% url 'home' %}" class="logo">
+        Prudvi Store
+    </a>
+
+    <div class="nav-links">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        {% if user.is_authenticated %}
+
+            <a href="{% url 'cart' %}">
+                🛒 Cart
+            </a>
+
+            <a href="{% url 'my_orders' %}">
+                📦 My Orders
+            </a>
+
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+
+            <a href="{% url 'register' %}">
+                Register
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</nav>
+
+
+<!-- PRODUCT -->
+
+<div class="container">
+
+    <div class="product-box">
+
+        <div>
+
+            {% if product.image %}
+
+                <img
+                    src="{{ product.image.url }}"
+                    alt="{{ product.name }}"
+                    class="product-image"
+                >
+
+            {% else %}
+
+                <div class="no-image">
+                    No Image Available
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="product-info">
+
+            <h1>
+                {{ product.name }}
+            </h1>
+
+            <p class="description">
+                {{ product.description }}
+            </p>
+
+            <div class="price">
+                ₹{{ product.price }}
+            </div>
+
+
+            {% if product.stock > 0 %}
+
+                <div class="stock">
+                    ✓ In Stock — {{ product.stock }} available
+                </div>
+
+                {% if user.is_authenticated %}
+
+                    <a
+                        href="{% url 'add_to_cart' product.id %}"
+                        class="add-btn"
+                    >
+                        🛒 Add to Cart
+                    </a>
+
+                {% else %}
+
+                    <div class="login-message">
+                        Please login to add this product to your cart.
+                    </div>
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="add-btn"
+                    >
+                        Login to Continue
+                    </a>
+
+                {% endif %}
+
+            {% else %}
+
+                <div class="stock out-stock">
+                    ✕ Out of Stock
+                </div>
+
+            {% endif %}
+
+
+            <a
+                href="{% url 'home' %}"
+                class="back-btn"
+            >
+                ← Back to Products
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Successful - Prudvi Store</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        .navbar {
+            background: #111827;
+            padding: 16px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 6px;
+        }
+
+        .nav-links a:hover {
+            background: #374151;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 60px auto;
+        }
+
+        .success-box {
+            background: white;
+            padding: 45px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #dcfce7;
+            color: #16a34a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            font-weight: bold;
+        }
+
+        h1 {
+            margin: 10px 0;
+            color: #166534;
+        }
+
+        .message {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .order-details {
+            text-align: left;
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 25px;
+        }
+
+        .detail {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .detail:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .value {
+            text-align: right;
+        }
+
+        .status {
+            color: #d97706;
+            font-weight: bold;
+        }
+
+        .total {
+            color: #2563eb;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .home-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .orders-btn {
+            background: #111827;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .thank-you {
+            margin-top: 25px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+
+            .success-box {
+                padding: 25px 18px;
+            }
+
+            .detail {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .value {
+                text-align: left;
+            }
+
+            .navbar {
+                justify-content: center;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <a href="{% url 'home' %}" class="logo">
+        Prudvi Store
+    </a>
+
+    <div class="nav-links">
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <a href="{% url 'my_orders' %}">
+            📦 My Orders
+        </a>
+
+        <a href="{% url 'logout' %}">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="success-box">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h1>Order Placed Successfully!</h1>
+
+        <p class="message">
+            Thank you for shopping with Prudvi Store.
+            Your order has been successfully placed.
+        </p>
+
+
+        <div class="order-details">
+
+            <div class="detail">
+
+                <span class="label">
+                    Order ID
+                </span>
+
+                <span class="value">
+                    #{{ order.id }}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span class="label">
+                    Customer Name
+                </span>
+
+                <span class="value">
+                    {{ order.name }}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span class="label">
+                    Email
+                </span>
+
+                <span class="value">
+                    {{ order.email }}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span class="label">
+                    Phone
+                </span>
+
+                <span class="value">
+                    {{ order.phone }}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span class="label">
+                    Payment Method
+                </span>
+
+                <span class="value">
+                    {{ order.payment_method }}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span class="label">
+                    Order Status
+                </span>
+
+                <span class="value status">
+                    {{ order.status }}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span class="label">
+                    Delivery Address
+                </span>
+
+                <span class="value">
+                    {{ order.address }}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span class="label">
+                    Total Amount
+                </span>
+
+                <span class="value total">
+                    ₹{{ order.total_amount }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <a
+                href="{% url 'my_orders' %}"
+                class="btn orders-btn"
+            >
+                📦 View My Orders
+            </a>
+
+            <a
+                href="{% url 'home' %}"
+                class="btn home-btn"
+            >
+                🛍️ Continue Shopping
+            </a>
+
+        </div>
+
+
+        <p class="thank-you">
+            We appreciate your purchase ❤️
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>
