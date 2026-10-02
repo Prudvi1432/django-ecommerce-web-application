@@ -43,11 +43,12 @@ ecommerce/
 ├── ecommerce/
 ├── store/
 ├── users/
-├── product/
+├── products/
 ├── templates/
 ├── venv/
 ├── manage.py
-└── README.md
+├── README.md
+└── .gitignore
 How to Run the Project
 1. Clone the repository
 git clone <repository-url>
